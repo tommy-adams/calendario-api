@@ -8,7 +8,8 @@ const assignmentSchema = new mongoose.Schema({
   classId: String,
   userId: String,
   description: String,
-  due: Date
+  due: Date,
+  complete: Boolean
 }, { collection: "assignments" });
 
 exports.Assignment = mongoose.model("assignments", assignmentSchema);
