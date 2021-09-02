@@ -76,7 +76,7 @@ app.patch("/api/edit-class", async (req, res) => {
 app.delete("/api/delete-class", async (req, res) => {
   await _class.Class.findOneAndDelete(req.query, {}, (err, doc) => {
     if (err) res.send(500, { err });
-    res.send("Success");
+    res.send(doc);
   });
 });
 
@@ -102,7 +102,7 @@ app.patch("/api/edit-assignment", async (req, res) => {
 app.delete("/api/delete-assignment", async (req, res) => {
   await assignment.Assignment.findOneAndDelete(req.query, {}, (err, doc) => {
     if (err) res.send(500, { err });
-    res.send("Success");
+    res.send(doc);
   });
 });
 
