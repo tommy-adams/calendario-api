@@ -106,5 +106,16 @@ app.delete("/api/delete-assignment", async (req, res) => {
   });
 });
 
+// DELETE ASSIGNMENTS BY CLASS
+app.delete("/api/delete-by-class", async (req, res) => {
+  await assignment.Assignment.find(req.query, async (err, docs) => {
+    if (err) res.send(500, { err });
+    await assignment.Assignment.deleteMany(req.query, {}, (err, doc) => {
+      if (err) res.send(500, { err });
+      res.send(docs);
+    });
+  });
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
