@@ -43,7 +43,7 @@ app.post("/api/subscribe", async (req, res) => {
       bcrypt.hash(req.body.password, saltRounds, async (err, hash) => {
         if (err) {
           console.error(err);
-          res.send("Sorry, we weren't able to subscribe you at this time. Please try again later.");
+          res.send("We weren't able to subscribe you at this time. Please try again later.");
         } else {
           const newUser = await user.User.create({
             email: req.body.email,
