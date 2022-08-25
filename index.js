@@ -92,7 +92,7 @@ app.delete("/api/delete-class", async (req, res) => {
   await _class.Class.findOneAndDelete(req.query, {}, (err, doc) => {
     if (err) res.send(500, { err });
     res.send(doc);
-  });
+  }).clone();
   
 });
 
@@ -122,7 +122,7 @@ app.delete("/api/delete-assignment", async (req, res) => {
   await assignment.Assignment.findOneAndDelete(req.query, {}, (err, doc) => {
     if (err) res.send(500, { err });
     res.send(doc);
-  });
+  }).clone();
   
 });
 
@@ -133,8 +133,8 @@ app.delete("/api/delete-by-class", async (req, res) => {
     await assignment.Assignment.deleteMany(req.query, {}, (err, doc) => {
       if (err) res.send(500, { err });
       res.send(docs);
-    });
-  });
+    }).clone();
+  }).clone();
   
 });
 
