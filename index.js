@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const user = require("./models/users");
 const _class = require("./models/classes");
 const assignment = require("./models/assignments");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -124,6 +125,11 @@ app.delete("/api/delete-by-class", async (req, res) => {
       res.send(docs);
     });
   });
+});
+
+// DISCONNECT
+app.post("/api/disconnect", (req, res) => {
+  return mongoose.disconnect();
 });
 
 const port = process.env.PORT || 5000;
