@@ -2,11 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const user = require("./models/users");
 const _class = require("./models/classes");
 const assignment = require("./models/assignments");
-const mongoose = require("mongoose");
 
 const app = express();
 
@@ -30,6 +30,7 @@ app.post("/api/login", async (req, res) => {
   } else {
     res.send("Email does not exist.");
   }
+  mongoose.disconnect();
 });
 
 // SUBSCRIBE
@@ -56,30 +57,35 @@ app.post("/api/subscribe", async (req, res) => {
       });
     }
   });
+  mongoose.disconnect();
 });
 
 // GET USER
 app.get("/api/get-user", async (req, res) => {
   const person = await user.User.findOne(req.query);
   res.send(person);
+  mongoose.disconnect();
 });
 
 // ADD CLASS
 app.post("/api/add-class", async (req, res) => {
   const newClass = await _class.Class.create(req.body);
   res.send(newClass);
+  mongoose.disconnect();
 });
 
 // GET CLASSES
 app.get("/api/get-classes", async (req, res) => {
   const classes = await _class.Class.find(req.query);
   res.send(classes);
+  mongoose.disconnect();
 });
 
 // EDIT CLASS
 app.patch("/api/edit-class", async (req, res) => {
   await _class.Class.findOneAndUpdate({_id: req.body._id}, req.body, { upsert: true });
   res.send(req.body);
+  mongoose.disconnect();
 });
 
 // DELETE CLASS
@@ -88,24 +94,28 @@ app.delete("/api/delete-class", async (req, res) => {
     if (err) res.send(500, { err });
     res.send(doc);
   });
+  mongoose.disconnect();
 });
 
 // CREATE ASSIGNMENT
 app.post("/api/add-assignment", async (req, res) => {
   const newAssignment = await assignment.Assignment.create(req.body);
   res.send(newAssignment);
+  mongoose.disconnect();
 });
 
 // LOAD ASSIGNMENTS
 app.get("/api/get-assignments", async (req, res) => {
   const assignments = await assignment.Assignment.find(req.query);
   res.send(assignments);
+  mongoose.disconnect();
 });
 
 // UPDATE ASSIGNMENT
 app.patch("/api/edit-assignment", async (req, res) => {
   await assignment.Assignment.findOneAndUpdate({_id: req.body._id}, req.body, { upsert: true });
   res.send(req.body);
+  mongoose.disconnect();
 });
 
 // DELETE ASSIGNMENT
@@ -114,6 +124,7 @@ app.delete("/api/delete-assignment", async (req, res) => {
     if (err) res.send(500, { err });
     res.send(doc);
   });
+  mongoose.disconnect();
 });
 
 // DELETE ASSIGNMENTS BY CLASS
@@ -125,12 +136,8 @@ app.delete("/api/delete-by-class", async (req, res) => {
       res.send(docs);
     });
   });
+  mongoose.disconnect();
 });
 
-// DISCONNECT
-app.post("/api/disconnect", (req, res) => {
-  return mongoose.disconnect();
-});
-
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 app.listen(port, () => console.log(`Listening on port ${port}`));
