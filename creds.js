@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 exports.connect = () => {
-  mongoose.connect("mongodb+srv://admin:oDwhyHe8mpjUg7@calendario.4caik.mongodb.net/calendario", {useNewUrlParser: true});
+  mongoose.connect(process.env.API_KEY, {useNewUrlParser: true});
 };
