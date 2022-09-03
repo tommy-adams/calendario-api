@@ -20,10 +20,14 @@ app.post("/api/login", async (req, res) => {
   const person = await user.User.findOne({ email: req.body.email });
   if (person) {
     bcrypt.compare(req.body.password, person.password, (err, result) => {
+      if (err) {
+        res.send(err.message);
+        return;
+      }
       if (result) {
         res.send(person);
       } else {
-        res.send("Password is incorrect.")
+        res.send("Password is incorrect.");
       }
     });
   } else {
@@ -63,7 +67,6 @@ app.post("/api/subscribe", async (req, res) => {
 app.get("/api/get-user", async (req, res) => {
   const person = await user.User.findOne(req.query);
   res.send(person);
-  
 });
 
 // ADD CLASS
