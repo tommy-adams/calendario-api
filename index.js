@@ -17,8 +17,10 @@ const saltRounds = 10;
 
 // LOGIN
 app.post("/api/login", async (req, res) => {
-  if (!req.body.email || !req.body.password) return;
-  if (req.body.email == "" || req.body.password == "") return;
+  if (req.body.email == null || req.body.password == null) {
+    res.send("Sorry, there was an error. Please try again.")
+    return;
+  }
   const person = await user.User.findOne({ email: req.body.email });
   if (person) {
     bcrypt.compare(req.body.password, person.password, (err, result) => {
