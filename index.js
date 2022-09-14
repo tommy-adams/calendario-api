@@ -17,6 +17,8 @@ const saltRounds = 10;
 
 // LOGIN
 app.post("/api/login", async (req, res) => {
+  if (!req.body.email || !req.body.password) return;
+  if (req.body.email == "" || req.body.password == "") return;
   const person = await user.User.findOne({ email: req.body.email });
   if (person) {
     bcrypt.compare(req.body.password, person.password, (err, result) => {
@@ -33,7 +35,6 @@ app.post("/api/login", async (req, res) => {
   } else {
     res.send("Email does not exist.");
   }
-  
 });
 
 // SUBSCRIBE
@@ -65,7 +66,8 @@ app.post("/api/subscribe", async (req, res) => {
 
 // GET USER
 app.get("/api/get-user", async (req, res) => {
-  const person = await user.User.findOne(req.query);
+  if (req.query._id == null) return;
+  const person = await user.User.findOne(req.query).orFail();
   res.send(person);
 });
 
@@ -78,6 +80,7 @@ app.post("/api/add-class", async (req, res) => {
 
 // GET CLASSES
 app.get("/api/get-classes", async (req, res) => {
+  if (req.query.userId == null) return;
   const classes = await _class.Class.find(req.query);
   res.send(classes);
   
@@ -108,6 +111,7 @@ app.post("/api/add-assignment", async (req, res) => {
 
 // LOAD ASSIGNMENTS
 app.get("/api/get-assignments", async (req, res) => {
+  if (req.query.classId) return;
   const assignments = await assignment.Assignment.find(req.query);
   res.send(assignments);
   
